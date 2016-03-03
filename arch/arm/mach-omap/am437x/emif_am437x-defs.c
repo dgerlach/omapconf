@@ -1,14 +1,14 @@
 /*
  *
  * @Component			OMAPCONF
- * @Filename			help_am437x.c
- * @Description			Help for AM437X specific functions
+ * @Filename			emif_am437x.c
+ * @Description			AM437X EMIF Register Address Definitions
  * @Author			Dave Gerlach <d-gerlach@ti.com>
- * @Date			2015
+ * @Date			2016
  * @Copyright			Texas Instruments Incorporated
  *
  *
- * Copyright (C) 2015 Texas Instruments Incorporated - http://www.ti.com/
+ * Copyright (C) 2014 Texas Instruments Incorporated - http://www.ti.com/
  *
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -41,40 +41,51 @@
  *
  */
 
+#include <emif_am437x-defs.h>
 
-#include <cpuinfo.h>
-#include <help_am437x.h>
-#include <stdio.h>
+reg *am437x_emif4d_mod[AM437X_EMIF4D_MOD_REGCOUNT + 1] = {
+	&am335x_emif4d_emif_mod_id_rev,
+	&am335x_emif4d_status,
+	&am335x_emif4d_sdram_config,
+	&am335x_emif4d_sdram_config_2,
+	&am335x_emif4d_sdram_ref_ctrl,
+	&am335x_emif4d_sdram_ref_ctrl_shdw,
+	&am335x_emif4d_sdram_tim_1,
+	&am335x_emif4d_sdram_tim_1_shdw,
+	&am335x_emif4d_sdram_tim_2,
+	&am335x_emif4d_sdram_tim_2_shdw,
+	&am335x_emif4d_sdram_tim_3,
+	&am335x_emif4d_sdram_tim_3_shdw,
+	&am335x_emif4d_pwr_mgmt_ctrl,
+	&am335x_emif4d_pwr_mgmt_ctrl_shdw,
+	&am335x_emif4d_int_config,
+	&am335x_emif4d_int_cfg_val_1,
+	&am335x_emif4d_int_cfg_val_2,
+	&am335x_emif4d_perf_cnt_1,
+	&am335x_emif4d_perf_cnt_2,
+	&am335x_emif4d_perf_cnt_cfg,
+	&am335x_emif4d_perf_cnt_sel,
+	&am335x_emif4d_perf_cnt_tim,
+	&am335x_emif4d_read_idle_ctrl,
+	&am335x_emif4d_read_idle_ctrl_shdw,
+	&am335x_emif4d_irqstatus_raw_sys,
+	&am335x_emif4d_irqstatus_sys,
+	&am335x_emif4d_irqenable_set_sys,
+	&am335x_emif4d_irqenable_clr_sys,
+	&am335x_emif4d_zq_config,
+	&am335x_emif4d_rdwr_lvl_rmp_win,
+	&am335x_emif4d_rdwr_lvl_rmp_ctrl,
+	&am335x_emif4d_rdwr_lvl_ctrl,
+	&am335x_emif4d_ddr_phy_ctrl_1,
+	&am335x_emif4d_ddr_phy_ctrl_1_shdw,
+	&am335x_emif4d_pri_cos_map,
+	&am335x_emif4d_connid_cos_1_map,
+	&am335x_emif4d_connid_cos_2_map,
+	&am335x_emif4d_rd_wr_exec_thrsh,
+	NULL};
 
+reg **emif_am437x_mods[EMIF_AM437X_MODS_COUNT] = {
+	(reg **) &am437x_emif4d_mod};
 
-/* ------------------------------------------------------------------------*//**
- * @FUNCTION		help_am437x
- * @BRIEF		display help for AM437X-specific functions
- * @param[in]		cat: help category to display
- * @DESCRIPTION		display help for AM437X-specific functions
- *//*------------------------------------------------------------------------ */
-void help_am437x(help_category cat, char *context)
-{
-	if (cat >= HELP_CATEGORY_MAX) {
-		fprintf(stderr, "%s(): incorrect category!!! (%u)\n",
-			__func__, cat);
-		return;
-	}
-
-	if (context == NULL) {
-		fprintf(stderr, "%s(): context == NULL!!!\n", __func__);
-		return;
-	}
-
-	if ((cat == HELP_ALL) || (cat == HELP_EXPORT)) {
-	        printf("\n\tomapconf export ctt [<filename>]\n");
-	        printf("\t    Export PRCM registers in .rd1 format for Clock "
-		       "Tree Tool (CTT, <http://omappedia.org/wiki/CTT>), to "
-		       "<filename> or stdout if omitted.\n");
-	}
-
-	if ((cat == HELP_ALL) || (cat == HELP_EMIF)) {
-		printf("\n\tomapconf dump emif\n");
-		printf("\t    Dump EMIF4D registers to stdout\n");
-	}
-}
+const char *emif_am437x_mods_name[EMIF_AM437X_MODS_COUNT] = {
+	"EMIF4D"};

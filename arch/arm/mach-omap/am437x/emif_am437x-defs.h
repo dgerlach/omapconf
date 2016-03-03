@@ -1,14 +1,14 @@
 /*
  *
  * @Component			OMAPCONF
- * @Filename			help_am437x.c
- * @Description			Help for AM437X specific functions
+ * @Filename			emif_am437x-defs.h
+ * @Description			AM437X EMIF Register Address Definitions
  * @Author			Dave Gerlach <d-gerlach@ti.com>
- * @Date			2015
+ * @Date			2016
  * @Copyright			Texas Instruments Incorporated
  *
  *
- * Copyright (C) 2015 Texas Instruments Incorporated - http://www.ti.com/
+ * Copyright (C) 2016 Texas Instruments Incorporated - http://www.ti.com/
  *
  *
  *  Redistribution and use in source and binary forms, with or without
@@ -42,39 +42,31 @@
  */
 
 
-#include <cpuinfo.h>
-#include <help_am437x.h>
+#ifndef __EMIF_AM437X_DEFS_H__
+#define __EMIF_AM437X_DEFS_H__
+
+#include <reg.h>
 #include <stdio.h>
 
+/*
+ * AM437x EMIF shares a lot in common with AM335x EMIF so use the register
+ * definitions as a baseline.
+ */
 
-/* ------------------------------------------------------------------------*//**
- * @FUNCTION		help_am437x
- * @BRIEF		display help for AM437X-specific functions
- * @param[in]		cat: help category to display
- * @DESCRIPTION		display help for AM437X-specific functions
- *//*------------------------------------------------------------------------ */
-void help_am437x(help_category cat, char *context)
-{
-	if (cat >= HELP_CATEGORY_MAX) {
-		fprintf(stderr, "%s(): incorrect category!!! (%u)\n",
-			__func__, cat);
-		return;
-	}
+#include <emif_am335x-defs.h>
 
-	if (context == NULL) {
-		fprintf(stderr, "%s(): context == NULL!!!\n", __func__);
-		return;
-	}
+#define AM437X_EMIF4D_MOD_REGCOUNT			38
+extern reg *am437x_emif4d_mod[AM437X_EMIF4D_MOD_REGCOUNT + 1];
 
-	if ((cat == HELP_ALL) || (cat == HELP_EXPORT)) {
-	        printf("\n\tomapconf export ctt [<filename>]\n");
-	        printf("\t    Export PRCM registers in .rd1 format for Clock "
-		       "Tree Tool (CTT, <http://omappedia.org/wiki/CTT>), to "
-		       "<filename> or stdout if omitted.\n");
-	}
+typedef enum {
+	EMIF_AM437X_EMIF4D,
+	EMIF_AM437X_MODS_COUNT = 1
+} emif_am437x_mod_id;
 
-	if ((cat == HELP_ALL) || (cat == HELP_EMIF)) {
-		printf("\n\tomapconf dump emif\n");
-		printf("\t    Dump EMIF4D registers to stdout\n");
-	}
-}
+
+extern reg **emif_am437x_mods[EMIF_AM437X_MODS_COUNT];
+
+extern const char *emif_am437x_mods_name[EMIF_AM437X_MODS_COUNT];
+
+
+#endif
