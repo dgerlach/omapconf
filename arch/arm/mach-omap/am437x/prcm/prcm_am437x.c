@@ -166,7 +166,7 @@ static inline int _prcm_am437x_rtc_dump(FILE *stream)
  *			OMAPCONF_ERR_REG_ACCESS
  * @param[in,out]	stream: output stream
  * @DESCRIPTION		dump MPU PRCM registers and pretty-print it
- *//*------------------------------------------------------------------------ */
+ */
 static inline int _prcm_am437x_efuse_dump(FILE *stream)
 {
 	int ret;
@@ -186,7 +186,7 @@ static inline int _prcm_am437x_efuse_dump(FILE *stream)
  *			OMAPCONF_ERR_REG_ACCESS
  * @param[in,out]	stream: output stream
  * @DESCRIPTION		dump DEVICE PRCM registers and pretty-print it
- *//*------------------------------------------------------------------------ */
+ */
 static inline int _prcm_am437x_dev_dump(FILE *stream)
 {
 	int ret;
@@ -195,6 +195,38 @@ static inline int _prcm_am437x_dev_dump(FILE *stream)
 	if (ret != 0)
 		return ret;
 	return cm_am437x_dump(stream, CM_AM437X_CM_DEVICE);
+}
+
+/* ------------------------------------------------------------------------*//**
+ * @FUNCTION		_prcm_am437x_irq_dump
+ * @BRIEF		dump PRCM IRQ PRCM registers and pretty-print it
+ * @RETURNS		0 in case of success
+ *			OMAPCONF_ERR_CPU
+ *			OMAPCONF_ERR_ARG
+ *			OMAPCONF_ERR_REG_ACCESS
+ * @param[in,out]	stream: output stream
+ * @DESCRIPTION		dump PRM IRQ PRCM registers and pretty-print it.
+ *			NOTE: No corresponding CM module
+ */
+static inline int _prcm_am437x_irq_dump(FILE *stream)
+{
+	return prm_am437x_dump(stream, PRM_AM437X_PRM_IRQ);
+}
+
+/* ------------------------------------------------------------------------*//**
+ * @FUNCTION		_prcm_am437x_dpll_dump
+ * @BRIEF		dump PRCM IRQ PRCM registers and pretty-print it
+ * @RETURNS		0 in case of success
+ *			OMAPCONF_ERR_CPU
+ *			OMAPCONF_ERR_ARG
+ *			OMAPCONF_ERR_REG_ACCESS
+ * @param[in,out]	stream: output stream
+ * @DESCRIPTION		dump CM DPLL PRCM registers and pretty-print it.
+ *			NOTE: No corresponding PRM module
+ */
+static inline int _prcm_am437x_dpll_dump(FILE *stream)
+{
+	return cm_am437x_dump(stream, CM_AM437X_CM_DPLL);
 }
 
 /* ------------------------------------------------------------------------*//**
@@ -208,7 +240,7 @@ static inline int _prcm_am437x_dev_dump(FILE *stream)
  * @param[in]		s: power domain
  * @DESCRIPTION		dump (formated in table) PRCM registers related to power
  *			domain provided in string s.
- *//*------------------------------------------------------------------------ */
+ */
 int prcm_am437x_dump(char *s)
 {
 	int ret = 0;
@@ -222,6 +254,8 @@ int prcm_am437x_dump(char *s)
 		ret |= _prcm_am437x_rtc_dump(stdout);
 		ret |= _prcm_am437x_gfx_dump(stdout);
 		ret |= _prcm_am437x_efuse_dump(stdout);
+		ret |= _prcm_am437x_irq_dump(stdout);
+		ret |= _prcm_am437x_dpll_dump(stdout);
 		return ret;
 	} else if (strcmp(s, "wkup") == 0) {
 		return _prcm_am437x_wkup_dump(stdout);
@@ -237,6 +271,10 @@ int prcm_am437x_dump(char *s)
 		return _prcm_am437x_efuse_dump(stdout);
 	} else if (strcmp(s, "dev") == 0) {
 		return _prcm_am437x_dev_dump(stdout);
+	} else if (strcmp(s, "irq") == 0) {
+		return _prcm_am437x_irq_dump(stdout);
+	} else if (strcmp(s, "dpll") == 0) {
+		return _prcm_am437x_dpll_dump(stdout);
 	} else {
 		return err_arg_msg_show(HELP_PRCM);
 	}
